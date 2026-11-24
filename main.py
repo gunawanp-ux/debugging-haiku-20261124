@@ -42,6 +42,10 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(text)
+    # Round-trip check: the file on disk must be byte-identical to the
+    # validated haiku (catches a truncated or mis-encoded write).
+    with open("/output/entry.txt", "r", encoding="utf-8") as f:
+        assert f.read() == text, "entry.txt does not match the haiku"
 
 
 if __name__ == "__main__":
